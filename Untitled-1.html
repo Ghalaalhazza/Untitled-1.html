@@ -23,25 +23,24 @@
       height: 100vh;
       overflow: hidden;
       background: radial-gradient(circle at 50% 20%, var(--bg4) 0%, var(--bg3) 30%, var(--bg2) 70%, var(--bg1) 100%);
-      color: var(--ink);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       touch-action: manipulation;
     }
 
+    /* Gift box */
     .gift {
       position: relative;
       width: clamp(120px, 45vw, 200px);
       height: clamp(100px, 40vw, 170px);
       perspective: 900px;
       filter: drop-shadow(0 15px 25px rgba(0,0,0,0.4));
-      transition: transform 0.3s ease;
+      cursor: pointer;
     }
-
-    .gift:active { transform: scale(0.98); }
 
     .box {
       position: absolute;
@@ -121,8 +120,11 @@
     .loop.left { left: 0; }
     .loop.right { right: 0; transform: scaleX(-1) rotate(45deg); }
 
-    .opened .lid { transform: translateX(-50%) rotateX(160deg) translateY(-8px); }
+    .opened .lid {
+      transform: translateX(-50%) rotateX(160deg) translateY(-8px);
+    }
 
+    /* Button */
     .cta { margin-top: 2rem; }
 
     .btn {
@@ -142,7 +144,7 @@
       background: var(--accent2);
     }
 
-    /* Overlay & Letter */
+    /* Letter overlay */
     .overlay {
       position: fixed;
       inset: 0;
@@ -210,10 +212,6 @@
       cursor: pointer;
       color: #333;
     }
-
-    @media (min-width: 768px) {
-      .btn { font-size: 1.1rem; }
-    }
   </style>
 </head>
 <body>
@@ -257,19 +255,20 @@
     function openGift() {
       if (isOpen) return;
       isOpen = true;
-      document.body.classList.add('opened');
+      gift.classList.add('opened'); // ✅ fix: add class to gift instead of body
       overlay.classList.add('show');
-      setTimeout(() => letter.classList.add('show'), 200);
+      setTimeout(() => letter.classList.add('show'), 300);
     }
 
     function closeGift() {
       letter.classList.remove('show');
-      setTimeout(() => overlay.classList.remove('show'), 200);
+      overlay.classList.remove('show');
+      gift.classList.remove('opened');
       isOpen = false;
     }
 
     openBtn.addEventListener('click', openGift);
-    gift.addEventListener('click', openGift);
+    gift.addEventListener('click', openGift); // tap box also opens it
     closeLetter.addEventListener('click', closeGift);
   </script>
 </body>
